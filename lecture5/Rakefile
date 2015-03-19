@@ -1,0 +1,19 @@
+require 'rake/clean'
+
+CC = 'clang'
+TARGETS = %w(test xml-entitify xml-deentitify search-nums)
+
+CLEAN.include('*.yy.c')
+CLOBBER.include(TARGETS)
+
+TARGETS.each do |target|
+  yy_c = "#{target}.yy.c"
+
+  file(target => yy_c) do
+    sh(CC, '-o', target, yy_c)
+  end
+end
+
+rule('.yy.c' => '%{\.yy$,}X.l') do |t|
+  sh('flex', '-o', t.name, t.source)
+end
