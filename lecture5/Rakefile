@@ -1,7 +1,15 @@
 require 'rake/clean'
 
 CC = 'clang'
-TARGETS = %w(test xml-entitify xml-deentitify search-nums)
+FLEX = 'flex'
+
+TARGETS = %w(
+test
+xml-entitify
+xml-deentitify
+search-nums
+hiki-outliner
+)
 
 CLEAN.include('*.yy.c')
 CLOBBER.include(TARGETS)
@@ -15,5 +23,5 @@ TARGETS.each do |target|
 end
 
 rule('.yy.c' => '%{\.yy$,}X.l') do |t|
-  sh('flex', '-o', t.name, t.source)
+  sh(FLEX, '-o', t.name, t.source)
 end
